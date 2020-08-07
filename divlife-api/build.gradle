@@ -1,0 +1,24 @@
+apply plugin: 'org.springframework.boot'
+
+
+dependencies {
+    implementation "org.springframework.boot:spring-boot-starter-web"
+    testImplementation("org.springframework.boot:spring-boot-starter-test") {
+        exclude group: "org.junit.vintage", module: "junit-vintage-engine"
+    }
+}
+
+bootJar {
+    enabled = true
+    mainClassName = 'jp.tefuna.divlife.api.Application'
+}
+
+jar {
+    enabled = false
+}
+
+
+// application {
+//     mainClassName = 'divlife.api.App'
+// }
+
