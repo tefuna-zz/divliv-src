@@ -3,7 +3,7 @@ package jp.tefuna.divlife.api.dto.controller.healthcheck;
 import lombok.Data;
 
 /**
- * HealthCheckRestControllerレスポンス
+ * HealthCheckRestControllerレスポンス.
  *
  * @author tefuna
  */

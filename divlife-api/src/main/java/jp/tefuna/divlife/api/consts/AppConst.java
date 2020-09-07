@@ -1,7 +1,7 @@
 package jp.tefuna.divlife.api.consts;
 
 /**
- * アプリケーション定数。
+ * アプリケーション定数.
  *
  * @author tefuna
  */

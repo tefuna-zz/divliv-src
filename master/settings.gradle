@@ -8,6 +8,6 @@
  */
 
 rootProject.name = 'master'
-// includeFlat 'tfn-core'
-// includeFlat 'divlife-code'
+includeFlat 'tfn-core'
+includeFlat 'divlife-code'
 includeFlat 'divlife-api'

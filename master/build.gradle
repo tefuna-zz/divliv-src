@@ -1,9 +1,16 @@
+// plugins {
+//     id 'org.springframework.boot' version '2.3.2.RELEASE'
+// }
+
 plugins {
-    id 'org.springframework.boot' version '2.3.2.RELEASE'
+    id 'checkstyle'
+    id 'com.github.spotbugs' version '4.5.0'
 }
 
 ext {
     defaultEncoding = 'UTF-8'
+    eclipseConf = System.getenv('GRADLE_ECLIPSE_CONF')
+    eclipseCheckstyleXml = 'tfn_checks.xml'
 }
 
 allprojects {
@@ -17,30 +24,35 @@ allprojects {
     // task cleanEclipse
     tasks.cleanEclipse.doLast {
         project.delete('.settings')
+        project.delete('.checkstyle', "${eclipseCheckstyleXml}")
     }
 
     // task eclipse
     tasks.eclipse.doLast {
-        def settingsDir =   new File('.settings')
+        def settingsDir = new File('.settings')
         settingsDir.mkdirs()
-    File buildship_prefs = file(".settings/org.eclipse.buildship.core.prefs")
+        File buildship_prefs = file(".settings/org.eclipse.buildship.core.prefs")
         buildship_prefs.append('''
             connection.project.dir=
             eclipse.preferences.version=1
             '''. stripIndent())
     }
+
 }
 
 subprojects {
     apply plugin: 'java'
-    apply plugin: 'io.spring.dependency-management'
-    // apply plugin: 'eclipse-wtp'
-    // apply plugin: 'checkstyle'
-    dependencyManagement {
-        imports {
-            mavenBom org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES
-        }
-    }
+    apply plugin: 'checkstyle'
+    // apply plugin: 'com.github.spotbugs'
+
+    // apply plugin: 'io.spring.dependency-management'
+    // // apply plugin: 'eclipse-wtp'
+    // // apply plugin: 'checkstyle'
+    // dependencyManagement {
+    //     imports {
+    //         mavenBom org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES
+    //     }
+
 
     repositories {
         jcenter()
@@ -62,9 +74,73 @@ subprojects {
         }
     }
 
+    eclipse {
+        project {
+            buildCommand 'net.sf.eclipsecs.core.CheckstyleBuilder'
+            natures 'net.sf.eclipsecs.core.CheckstyleNature'
+
+            buildCommand 'edu.umd.cs.findbugs.plugin.eclipse.findbugsBuilder'
+            natures 'edu.umd.cs.findbugs.plugin.eclipse.findbugsNature'
+        }
+        jdt.file {
+            withProperties { properties ->
+                def formatter = new XmlSlurper().parse("${eclipseConf}/formatter/tfn_formatter.xml")
+                formatter.profile.setting.each {
+                    properties.put(it.@id as String, it.@value as String)
+                }
+            }
+        }
+    }
+
+    tasks.eclipse.doLast {
+        // formatter
+        File ui_prefs = file(".settings/org.eclipse.jdt.ui.prefs")
+        ui_prefs.append('''
+            eclipse.preferences.version=1
+            formatter_profile=_tfn_formatter
+            formatter_settings_version=19
+        '''. stripIndent())
+
+        // checkstyle
+        copy {
+            from "${eclipseConf}/checkstyle/dot.checkstyle"
+            into '.'
+            rename(/dot\.checkstyle/, '.checkstyle')
+        }
+        copy {
+            from "${eclipseConf}/checkstyle/${eclipseCheckstyleXml}"
+            into '.'
+        }
+    }
+
     dependencies {
         implementation 'org.projectlombok:lombok:1.18.12'
+        annotationProcessor 'org.projectlombok:lombok:1.18.12'
         testImplementation 'org.projectlombok:lombok:1.18.12'
         testImplementation 'junit:junit:4.13'
     }
+
+    checkstyle {
+        toolVersion = '8.34'
+        configFile = file("${eclipseConf}/checkstyle/${eclipseCheckstyleXml}")
+        ignoreFailures = true
+        showViolations = true
+        reportsDir = file("$project.buildDir/reports/checkstyle/")
+    }
+    tasks.withType(Checkstyle) {
+        reports {
+            xml.enabled false
+            html.enabled true
+        }
+    }
+
+    // spotbugs {
+    //     toolVersion = '4.5.0'
+    //     ignoreFailures = true
+    // }
+    // tasks.withType(com.github.spotbugs.snom.SpotBugsTask) {
+    //     reports.xml.enabled = false
+    //     reports.html.enabled = true
+    // }
+
 }

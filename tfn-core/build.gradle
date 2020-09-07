@@ -1,0 +1,5 @@
+apply plugin: 'java-library'
+
+dependencies {
+    // implementation 'ch.qos.logback.logback-classic:1.2.3'
+}
