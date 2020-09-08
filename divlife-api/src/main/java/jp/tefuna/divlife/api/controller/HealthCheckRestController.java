@@ -1,19 +1,20 @@
 package jp.tefuna.divlife.api.controller;
 
 import java.time.LocalDateTime;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
 import jp.tefuna.divlife.api.consts.CtrlConst;
 import jp.tefuna.divlife.api.dto.controller.healthcheck.HealthCheckResponseElement;
 import lombok.extern.slf4j.Slf4j;
 
 /**
  * HealthCheckRestController.
- *
  * @author tefuna
  */
 @RestController
@@ -32,7 +33,6 @@ public class HealthCheckRestController {
     // TODO コントローラ標準化
     /**
      * healthcheck.
-     *
      * @return response
      */
     @GetMapping
@@ -40,6 +40,7 @@ public class HealthCheckRestController {
     public HealthCheckResponseElement healthcheck() {
 
         log.info("controller start");
+        log.error("aaaa", new Throwable());
 
         HealthCheckResponseElement elem = new HealthCheckResponseElement();
 
