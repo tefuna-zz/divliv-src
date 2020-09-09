@@ -18,8 +18,7 @@ import jp.tefuna.divlife.api.service.sample.SampleService;
 public class SampleRestController extends BaseController {
 
     @Autowired
-    SampleService SampleService;
-
+    SampleService sampleService;
 
 
     /**
@@ -30,6 +29,10 @@ public class SampleRestController extends BaseController {
     @ResponseStatus(HttpStatus.CREATED)
     public String sample() {
 
+        var id = "111";
+        var name = "name";
+
+        sampleService.add(id, name);
         // SampleServiceIn
         return "saaasss";
     }

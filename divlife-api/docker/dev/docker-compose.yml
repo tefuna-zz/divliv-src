@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  db:
+    build:
+      context: .
+      dockerfile: ./postgres/Dockerfile
+      args:
+        - DB_LANG=ja_JP
+    ports:
+        - 5432:5432
+    environment:
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+    volumes:
+      - ./postgres/initdb:/docker-entrypoint-initdb.d
+    #image: postgres_dev:latest

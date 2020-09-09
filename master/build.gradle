@@ -11,6 +11,10 @@ ext {
     defaultEncoding = 'UTF-8'
     eclipseConf = System.getenv('GRADLE_ECLIPSE_CONF')
     eclipseCheckstyleXml = 'tfn_checks.xml'
+    versions = [
+        'springboot': '2.3.3.RELEASE',
+        'mybatis': '2.1.3'
+    ]
 }
 
 allprojects {

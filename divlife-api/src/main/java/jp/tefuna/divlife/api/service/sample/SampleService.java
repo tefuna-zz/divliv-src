@@ -8,10 +8,10 @@ public interface SampleService {
 
     /**
      * aaaa.
-     * @param id     id
-     * @param sample sample
+     * @param id   id
+     * @param name name
      */
-    void add(String id, String sample);
+    void add(String id, String name);
 
     void subtract();
 
