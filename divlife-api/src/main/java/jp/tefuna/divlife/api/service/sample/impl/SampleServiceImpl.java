@@ -26,8 +26,7 @@ public class SampleServiceImpl extends BaseService implements SampleService {
     }
 
     @Override
-    public void subtract() {
-    }
+    public void subtract() {}
 
     @Override
     public void get() {
