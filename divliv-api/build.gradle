@@ -1,0 +1,44 @@
+plugins {
+    id 'org.springframework.boot' version '2.3.3.RELEASE'
+    id 'io.spring.dependency-management' version "1.0.10.RELEASE"
+}
+
+// apply plugin: 'io.spring.dependency-management'
+// // apply plugin: 'eclipse-wtp'
+// // apply plugin: 'checkstyle'
+dependencyManagement {
+    imports {
+        mavenBom org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES
+        mavenBom "org.junit:junit-bom:5.4.0"
+    }
+}
+
+dependencies {
+    implementation "org.springframework.boot:spring-boot-starter-web:${versions.springboot}"
+    implementation "org.mybatis.spring.boot:mybatis-spring-boot-starter:${versions.mybatis}"
+    // implementation "javax.validation:validation-api:2.0.1.Final"
+    implementation "org.hibernate:hibernate-validator:6.1.5.Final"
+    implementation "org.postgresql:postgresql"
+    implementation 'org.apache.commons:commons-lang3:3.11'
+
+    // implementation project(':')
+
+
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    // testImplementation(enforcedPlatform("org.junit:junit-bom:5.4.0")) // JUnit 5 BOM
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+
+}
+
+bootJar {
+    enabled = true
+    mainClassName = 'jp.tefuna.divliv.api.Application'
+}
+
+jar {
+    enabled = false
+}
+
+

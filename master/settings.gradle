@@ -9,5 +9,5 @@
 
 rootProject.name = 'master'
 includeFlat 'tfn-core'
-includeFlat 'divlife-code'
-includeFlat 'divlife-api'
+includeFlat 'divliv-code'
+includeFlat 'divliv-api'
